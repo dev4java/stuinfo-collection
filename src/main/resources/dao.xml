@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="GB2312"?>
+<dal>
+	<default>
+		<dbStrategy name=""
+			clazz="cc.luole.sns.dal.route.strategy.DefaultStrategy">
+			<pattern value="[0-9]$" group="g1" />
+		</dbStrategy>
+		<listenerClass className="" />
+		<idCenterDS ds="idCenterDS" />
+	</default>
+	<route>
+		<!-- Debate -->
+		<object name="cc.luole.tech.stuinfo_collection.core.model.AnswerQuestion"
+			listenerClass="" strategyProperty="id">
+			<dbStrategy name="" clasz="cc.luole.sns.dal.route.strategy.DefaultStrategy">
+				<pattern value="[0-9]$" group="g1" />
+			</dbStrategy>
+			<list name="answerquest_get_answer_by_stuid"
+				sqlitem="select id from sc_general_answerquestion  where stuid= ? "  sqlType="hsql"
+				keyProperty="stuid" valueProperty="id" >
+			</list>
+		</object>
+		
+		<object name="cc.luole.tech.stuinfo_collection.core.model.Parent"
+			listenerClass="" strategyProperty="id">
+			<dbStrategy name="" clasz="cc.luole.sns.dal.route.strategy.DefaultStrategy">
+				<pattern value="[0-9]$" group="g1" />
+			</dbStrategy>
+			
+			<list name="parent_get_stuparents_by_stuid"
+				sqlitem="select id from sc_general_parent where stuid= ? "  sqlType="hsql"
+				keyProperty="stuid" valueProperty="id" >
+			</list>
+			
+		</object>
+		
+		<object name="cc.luole.tech.stuinfo_collection.core.model.SchoolQuestion"
+			listenerClass="" strategyProperty="id">
+			<dbStrategy name="" clasz="cc.luole.sns.dal.route.strategy.DefaultStrategy">
+				<pattern value="[0-9]$" group="g1" />
+			</dbStrategy>
+			
+			<list name="schoolequestion_get_questions_by_dept_status"
+				sqlitem="select id from sc_general_schoolquestion where dept=? and status=? " sqlType="hsql"
+				keyProperty="id" valueProperty="id" />				
+				
+		</object>
+		
+		<object name="cc.luole.tech.stuinfo_collection.core.model.Student"
+			listenerClass="" strategyProperty="id">
+			<dbStrategy name="" clasz="cc.luole.sns.dal.route.strategy.DefaultStrategy">
+				<pattern value="[0-9]$" group="g1" />
+			</dbStrategy>
+			
+			<list name="student_get"
+				sqlitem="select id from sc_general_student " sqlType="hsql"
+				keyProperty="id" valueProperty="id" />
+			
+		</object>
+		
+		<object name="cc.luole.tech.stuinfo_collection.core.model.AdminUsr"
+			listenerClass="" strategyProperty="id">
+			<dbStrategy name="" clasz="cc.luole.sns.dal.route.strategy.DefaultStrategy">
+				<pattern value="[0-9]$" group="g1" />
+			</dbStrategy>
+			
+			<map name="get_adminusr_by_name"
+				sqlitem="select id from sc_sys_user where login_name= ? "  sqlType="hsql"
+				keyProperty="id" valueProperty="id" />
+				
+		</object>
+		
+		<object name="cc.luole.tech.stuinfo_collection.core.model.Fusion"
+			listenerClass="" strategyProperty="id">
+			<dbStrategy name="" clasz="cc.luole.sns.dal.route.strategy.DefaultStrategy">
+				<pattern value="[0-9]$" group="g1" />
+			</dbStrategy>
+							
+		</object>
+		
+		
+		
+	</route>
+</dal>
