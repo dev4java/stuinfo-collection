@@ -33,7 +33,7 @@ public class Student  implements Serializable{
 	private Long id;
 	//---------冗余字段
 	private int applyDept;//冗余字段 为了方便加载个人信息中的学校问题
-	private String stuanswer;
+	private String stuanswer;//暂时就一个问题
 
 @Id
 @Column(name="id")

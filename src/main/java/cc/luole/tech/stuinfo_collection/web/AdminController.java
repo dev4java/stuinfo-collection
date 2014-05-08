@@ -1,19 +1,28 @@
 package cc.luole.tech.stuinfo_collection.web;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import cc.luole.sns.tools.commons.Page;
 import cc.luole.tech.stuinfo_collection.core.dto.User;
+import cc.luole.tech.stuinfo_collection.core.dto.UserAnswer;
 import cc.luole.tech.stuinfo_collection.core.model.AdminUsr;
 import cc.luole.tech.stuinfo_collection.core.model.AnswerQuestion;
 import cc.luole.tech.stuinfo_collection.core.model.Parent;
@@ -24,6 +33,8 @@ import cc.luole.tech.stuinfo_collection.core.service.ParentService;
 import cc.luole.tech.stuinfo_collection.core.service.SchoolQuestionService;
 import cc.luole.tech.stuinfo_collection.core.service.StudentService;
 import cc.luole.tech.stuinfo_collection.core.service.UserService;
+import cc.luole.tech.stuinfo_collection.util.ExcelUtil;
+import cc.luole.tech.stuinfo_collection.util.ExcelUtilFormat;
 import cc.luole.tech.stuinfo_collection.util.Util;
 
 /**
@@ -44,56 +55,49 @@ public class AdminController extends BaseController{
 	/** serialVersionUID*/
 	private static final long serialVersionUID = 1L;
 	
-	/**
-	* <p>Title: login</p>
-	* <p>Description: 后台用户登陆</p>
-	* <p>Copyright: Copyright © 2013 - Luole.com</p>
-	* <p>Company: luoleTech</p>
-	* @author yusw
-	* @email yswthink@163.com
-	* @date 2014年5月6日下午4:40:53
-	* @version 1.0
-	* @param request
-	* @param response
-	* @param session
-	* @return
-	 */
-	@RequestMapping("/login")
-	public ModelAndView login(HttpServletRequest request,HttpServletResponse response,HttpSession session){
-		String name=request.getParameter("name");
-		String password=request.getParameter("password");
-		if(!Util.notEmpty(name) || !Util.notEmpty(password)){
-			this.jsonError("请输入用户名或密码");
-		}
-		AdminUsr aUsr = adminUsrService.getAdminUsrbyName(name);
-		if(aUsr!=null){
-			String dbPwd=aUsr.getPassword();
-			if(password.equals(dbPwd)){
-				session.setAttribute("isLogin", aUsr);
-				return this.jsonSuccess("suc", aUsr);
-			}			
-		}else{
-			return this.jsonError("无此用户,请与管理员联系");
-		}
-		return null;
-	}
+
 	
 	@RequestMapping("/list")
 	public ModelAndView listUser(HttpServletRequest request,HttpServletResponse response,HttpSession session){
-		if(!isLogin(session)){
-			return this.jsonError("请先登陆");
+		if(!isLogin()){
+			//return this.jsonError("请先登陆");
+			return this.getLogin();
 		}
 		ModelAndView model = new ModelAndView();
 		int pageNo=Util.toInt4String(request,"pageNo");
 		int pageSize=Util.toInt4String(request,"pageSize");
-		pageSize=10;
+		if(pageSize==0){
+			pageSize=10;
+		}
+		if(pageNo==0){
+			pageNo=1;
+		}
+		String flag=request.getParameter("flag");
+		if(null==flag || "".equals(flag)){
+			flag="next";
+		}
+		long totalPageCount =1L;
+		long totalCount=1L;
 		Page page = studentService.getPageStudent(pageNo, pageSize);
 		if(page!=null){
-			model.addObject("message", page.getResult());	
+			
+			totalPageCount=page.getTotalPageCount();
+			totalCount=page.getTotalCount();
+			model.addObject("list", page.getResult());	
+			totalPageCount=page.getTotalPageCount();
+			totalCount=page.getTotalCount();
+			model.addObject("page", page);
+			model.addObject("_url", "list");
+			model.addObject("pageNo",pageNo);
+			model.addObject("pageSize",pageSize);
+			String pageHtml =this.pageHtml(flag,pageNo, totalCount, totalPageCount);
+			model.addObject("pageHtml", pageHtml);
+			System.out.println(page.getCurrentPageNo()+"----------"+page.getTotalCount()+"---------"+pageHtml);
 		}
-		model.setViewName("stu_page");
+		model.setViewName("/admin/list");
 		return model;
 	}
+	
 	
 
 	/**
@@ -112,8 +116,9 @@ public class AdminController extends BaseController{
 	 */
 	@RequestMapping("/show")
 	public ModelAndView showUser(HttpServletRequest request,HttpServletResponse response,HttpSession session){
-		if(!isLogin(session)){
-			return this.jsonError("请先登陆");
+		if(!isLogin()){
+			//return this.jsonError("请先登陆");
+			return this.getLogin();
 		}
 		ModelAndView model = new ModelAndView();
 		String uid=request.getParameter("uid");
@@ -126,7 +131,7 @@ public class AdminController extends BaseController{
 		}else{
 			model.addObject("message", "nothing");	
 		}
-		model.setViewName("showMessage");
+		model.setViewName("/admin/detail");
 		return model;
 	}
 	
@@ -144,8 +149,9 @@ public class AdminController extends BaseController{
 	 */
 	@RequestMapping("/add/question")
 	public ModelAndView addQuestion(HttpSession session){
-		if(!isLogin(session)){
-			return this.jsonError("请先登陆");
+		if(!isLogin()){
+			//return this.jsonError("请先登陆");
+			return this.getLogin();
 		}
 		ModelAndView model = new ModelAndView();
 		SchoolQuestion aq = new SchoolQuestion();
@@ -163,15 +169,390 @@ public class AdminController extends BaseController{
 	}
 	
 	@RequestMapping("/download")
-	public ModelAndView download(HttpServletRequest request,HttpServletResponse response,HttpSession session){
-		if(!isLogin(session)){
-			return this.jsonError("请先登陆");
+	public ModelAndView download(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		if(!isLogin()){
+			//return this.jsonError("请先登陆");
+			return this.getLogin();
 		}
-		ModelAndView model = new ModelAndView();
+		List<ExcelUtilFormat> formats = new ArrayList<ExcelUtilFormat>();
+		 	HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	        List<User> listU =userService.getListUserInfos();
+    		//------------------------------------------------------------------------------------------------------
+	       /* List<Parent> listParent=null;
+	        List<UserAnswer> listUa=null;
+	        ExcelUtilFormat parentName=null;
+	        ExcelUtilFormat company=null;
+	        ExcelUtilFormat jobTitle=null;
+	        ExcelUtilFormat telphone=null;
+	        for (User user : listU) {
+	        	listParent=user.getParent();
+	        	if(listParent!=null){
+	        		for (Parent p : listParent) {
+	        			int guanxi=p.getRelation();
+	        			if(guanxi==1){
+	        				parentName = new ExcelUtilFormat("父亲", 10, "name");
+        		    		formats.add(parentName);
+	        			}else{
+	        				parentName = new ExcelUtilFormat("母亲", 10, "name");
+        		    		formats.add(parentName);
+	        			}
+	        			company = new ExcelUtilFormat("工作单位", 10, "company");
+    		    		formats.add(company);
+    		    		jobTitle = new ExcelUtilFormat("工作职务", 10, "jobTitle");
+    		    		formats.add(jobTitle);
+    		    		telphone = new ExcelUtilFormat("手机", 10, "telphone");
+    		    		formats.add(telphone);	
+					}
+	        	}
+			}
+	        ExcelUtilFormat question=null;
+	        ExcelUtilFormat answer=null;
+	        for (User user : listU) {
+	        	listUa=user.getUserAnswer();
+	        	if(listUa!=null){
+	        		for (UserAnswer userAnswer : listUa) {
+	        			question = new ExcelUtilFormat(userAnswer.getQuestion(), 40, "question");
+			    		formats.add(question);
+			    		answer = new ExcelUtilFormat(userAnswer.getAnswer(), 40, "answer");
+			    		formats.add(answer);
+					}
+	        	}
+			}
+	    	List<Object> listObj=new ArrayList<Object>();
+    		listObj.add(listU);
+    		listObj.add(listUa);
+    		listObj.add(listParent);*/
+    		//------------------------------------------------------------------------------------------------------
+	        byte[] bytes =null;
+	    		String sheetName="students.xls";
+	    		//List<User> courseList = new ArrayList<User>();
+	    		
+	    		ExcelUtilFormat course = new ExcelUtilFormat("孩子姓名", 10, "uStuName");
+	    		formats.add(course);
+	    		ExcelUtilFormat classroomTeacher = new ExcelUtilFormat("性别", 10, "uStuSex");
+	    		formats.add(classroomTeacher);
+	    		ExcelUtilFormat teacherSourceName = new ExcelUtilFormat("生日", 20, "uStuBirthday");
+	    		formats.add(teacherSourceName);
+	    		ExcelUtilFormat address = new ExcelUtilFormat("户口所在地", 30, "uStuHujiAddress");
+	    		formats.add(address);
+	    		ExcelUtilFormat managementTeacher = new ExcelUtilFormat("家庭住址", 30, "uStuAddress");
+	    		formats.add(managementTeacher);
+	    		/*ExcelUtilFormat typeName = new ExcelUtilFormat("是否租住", 10, "typeName");
+	    		formats.add(typeName);
+	    		
+	    		ExcelUtilFormat grade = new ExcelUtilFormat("年级", 10, "grade");
+	    		formats.add(grade);
+	    		ExcelUtilFormat ext = new ExcelUtilFormat("上线人数", 10, "ext");
+	    		formats.add(ext);*/
+	    		
+//	    		headers.setContentDispositionFormData("attachment",sheetName);
+	    		/*do
+	    		{
+	    			Page p = this.courseGroupService.getAllCoursebyDelete(Constants.Deleted.NORMAL,pageNo, pageSize);
+	        		totalPage = p.getTotalPageCount();
+	        		p = this.toCourseDto(p);
+	        		courseList.addAll((List<CourseDto>)p.getResult());
+	        		pageNo++;
+	    		}
+	    		while(pageNo<=totalPage);*/
+	    	
+	    		headers.setContentDispositionFormData("attachment",sheetName);
+	    		try {
+	    			ByteArrayOutputStream bos = ExcelUtil.madeSingleSheetExcel(listU, User.class, formats, sheetName);
+	    			bytes = bos.toByteArray();
+				} catch (Exception e) {
+					logger.error("下载数据出错！", e);
+				}
+//	        return new ResponseEntity<byte[]>(bytes,headers, HttpStatus.CREATED);
+		        OutputStream os = null;
+				try {
+					os = response.getOutputStream();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  
+			    try {  
+			    	response.reset();  
+			    	response.setHeader("Content-Disposition", "attachment; filename="+sheetName);  
+			    	response.setContentType("application/octet-stream; charset=utf-8");  
+			        try {
+						os.write(bytes);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}  
+			        try {
+						os.flush();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}  
+			    } finally {  
+			        if (os != null) {  
+			            os.close();  
+			        }  
+			    }
+				return null;  
 		
-		return model;
+	}
+	
+	@RequestMapping("/delete")
+	public ModelAndView del(HttpServletRequest request,HttpServletResponse response,HttpSession session){
+		if(!isLogin()){
+			//return this.jsonError("请先登陆");
+			return this.getLogin();
+		}
+		String uid=request.getParameter("uid");
+		long lid=Util.tolong4Stringid(uid);
+		if(lid==0L){
+			return this.jsonError("数据传输错误");
+		}
+		boolean sf=false;
+		Student student=studentService.load(lid);
+		if(student!=null){
+			sf=studentService.delete(lid);
+			if(sf){
+				//删除父母
+				List<Parent> listParent=parentService.getListParentsByStuid(lid);
+				if(listParent!=null && listParent.size()>0){
+					for (Parent parent : listParent) {
+						sf=parentService.delete(parent.getId());
+					}
+				}
+				//删除问答
+				List<AnswerQuestion> list=answerQuestionService.getListAnswerQuestionsByStuid(lid);
+				if(list!=null && list.size()>0){
+					for (AnswerQuestion answerQuestion : list) {
+						sf=answerQuestionService.delete(answerQuestion.getId());
+					}
+				}
+				return this.jsonSuccess("suc", null);
+			}else{
+				return this.jsonError("删除失败");
+			}
+		}		
+		return null;
 	}
 	
 	
+	//后台分页代码
+	private String pageHtml(String flag,int pageNo,long totalCount,long totalPageCount){
+		String pageHtml="";
+		int c=pageNo%8;
+		int start=1;
+		int end=1;
+		StringBuilder sb = new StringBuilder();
+		sb.append("");
+		sb.append("<a class=\"home\" href=\"javascript:void(0)\" id=\"homeid\">首页</a>");
+		sb.append("<a  id=\"upid\" class=\"prev\" href=\"#\">上一页</a>");
+		//number-cur
+		if(totalPageCount>8){
+			if(pageNo<8){
+				for (int i = 1; i <= 8; i++) {
+					sb.append("<a class=\"number ");
+					if(i==pageNo){
+						sb.append(" number-cur  ");
+					}
+					sb.append("\" onClick=\"go(");
+					sb.append(i);
+					sb.append(");\">");
+					sb.append(i);
+					sb.append("</a>");
+				}
+				sb.append("...");
+				sb.append("<a class=\"number\" onClick=\"go(");
+				sb.append(totalPageCount);
+				sb.append(");\">");
+				sb.append(totalPageCount);
+				sb.append("</a>");
+			}else{
+				int s=pageNo-c+1;//开始一排的第一个
+				int s1=s+8;//一排结束的值[不包含该值]
+				if(c==0){
+					if(flag.equals("up")){
+						s=pageNo-8;
+						if(totalPageCount<s1){
+							for (int ss=pageNo-c; ss <= totalPageCount; ss++) {//for (int ss=pageNo-c+1; ss <= totalPageCount; ss++) {
+								//System.out.println("-------------"+ss);
+								/*sb.append("<a class=\"number\" onClick=\"go(");*/
+								sb.append("<a class=\"number ");
+								if(ss==pageNo){
+									sb.append(" number-cur  ");
+								}
+								sb.append("\" onClick=\"go(");
+								sb.append(ss);
+								sb.append(");\">");
+								sb.append(ss);
+								sb.append("</a>");
+							}
+						}else{
+							for (int i = pageNo-8+1; i <= pageNo; i++) {
+								/*sb.append("<a class=\"number\" onClick=\"go(");*/
+								sb.append("<a class=\"number ");
+								if(i==pageNo){
+									sb.append(" number-cur  ");
+								}
+								sb.append("\" onClick=\"go(");
+								sb.append(i);
+								sb.append(");\">");
+								sb.append(i);
+								sb.append("</a>");
+							}
+							sb.append("...");
+							sb.append("<a class=\"number\" onClick=\"go(");
+							sb.append(totalPageCount);
+							sb.append(");\">");
+							sb.append(totalPageCount);
+							sb.append("</a>");
+						}
+						
+					}else if(flag.equals("next")){
+						s=pageNo+8;
+						if(totalPageCount<s1){
+							sb.append("<a class=\"number\" onClick=\"go(1);\">1</a> ");
+							
+							sb.append("...");
+							for (int ss=pageNo-c; ss <= totalPageCount; ss++) {//for (int ss=pageNo-c+1; ss <= totalPageCount; ss++) {
+								//System.out.println("-------------"+ss);
+								/*sb.append("<a class=\"number\" onClick=\"go(");*/
+								sb.append("<a class=\"number ");
+								if(ss==pageNo){
+									sb.append(" number-cur  ");
+								}
+								sb.append("\" onClick=\"go(");
+								sb.append(ss);
+								sb.append(");\">");
+								sb.append(ss);
+								sb.append("</a>");
+							}
+						}else{
+							for (int i = pageNo+1; i <= s; i++) {
+								/*sb.append("<a class=\"number\" onClick=\"go(");*/
+								sb.append("<a class=\"number ");
+								if(i==pageNo){
+									sb.append(" number-cur  ");
+								}
+								sb.append("\" onClick=\"go(");
+								sb.append(i);
+								sb.append(");\">");
+								sb.append(i);
+								sb.append("</a>");
+							}
+							sb.append("...");
+							sb.append("<a class=\"number\" onClick=\"go(");
+							sb.append(totalPageCount);
+							sb.append(");\">");
+							sb.append(totalPageCount);
+							sb.append("</a>");
+						}
+						
+					}else if(flag.equals("curr")){
+						s=pageNo+8;
+						if(totalPageCount<s1){
+							sb.append("<a class=\"number\" onClick=\"go(1);\">1</a> ");
+							sb.append("...");
+							for (int ss=pageNo-c; ss <= totalPageCount; ss++) {
+								//System.out.println("-------------"+ss);
+								/*sb.append("<a class=\"number\" onClick=\"go(");*/
+								sb.append("<a class=\"number ");
+								if(ss==pageNo){
+									sb.append(" number-cur  ");
+								}
+								sb.append("\" onClick=\"go(");
+								sb.append(ss);
+								sb.append(");\">");
+								sb.append(ss);
+								sb.append("</a>");
+							}
+						}else{
+							for (int i = pageNo; i < s; i++) {
+								/*sb.append("<a class=\"number\" onClick=\"go(");*/
+								sb.append("<a class=\"number ");
+								if(i==pageNo){
+									sb.append(" number-cur  ");
+								}
+								sb.append("\" onClick=\"go(");
+								sb.append(i);
+								sb.append(");\">");
+								sb.append(i);
+								sb.append("</a>");
+							}
+							sb.append("...");
+							sb.append("<a class=\"number\" onClick=\"go(");
+							sb.append(totalPageCount);
+							sb.append(");\">");
+							sb.append(totalPageCount);
+							sb.append("</a>");
+						}
+						
+					}
+				}else if(totalPageCount<s1){
+					sb.append("<a class=\"number\" onClick=\"go(1);\">1</a> ");
+					sb.append("...");
+					for (int ss=pageNo-c+1; ss <= totalPageCount; ss++) {
+						//System.out.println("-------------"+ss);
+						/*sb.append("<a class=\"number\" onClick=\"go(");*/
+						sb.append("<a class=\"number ");
+						if(ss==pageNo){
+							sb.append(" number-cur  ");
+						}
+						sb.append("\" onClick=\"go(");
+						sb.append(ss);
+						sb.append(");\">");
+						sb.append(ss);
+						sb.append("</a>");
+					}
+				}
+				
+				else{
+					for (int ss=pageNo-c+1; ss < s1; ss++) {
+						//System.out.println("-------------"+ss);
+						/*sb.append("<a class=\"number\" onClick=\"go(");*/
+						sb.append("<a class=\"number ");
+						if(ss==pageNo){
+							sb.append(" number-cur  ");
+						}
+						sb.append(" \" onClick=\"go(");
+						sb.append(ss);
+						sb.append(");\">");
+						sb.append(ss);
+						sb.append("</a>");
+					}
+					if(s1<totalPageCount){
+						sb.append("...");
+						sb.append("<a class=\"number\" onClick=\"go(");
+						sb.append(totalPageCount);
+						sb.append(");\">");
+						sb.append(totalPageCount);
+						sb.append("</a>");
+					}
+				}
+				
+			}
+		}else{//小于8
+			for (int i = 1; i <= totalPageCount; i++) {
+				/*sb.append("<a class=\"number\" onClick=\"go(");*/
+				sb.append("<a class=\"number ");
+				if(i==pageNo){
+					sb.append(" number-cur  ");
+				}
+				sb.append("\" onClick=\"go(");
+				sb.append(i);
+				sb.append(");\">");
+				sb.append(i);
+				sb.append("</a>");
+			}
+		}
+		sb.append("<a id=\"nextid\" class=\"next next-cur\" href=\"#\">下一页</a>");
+		sb.append("<a id=\"endid\"  class=\"end\" href=\"javascript:void(0)\">末页</a>");
+		sb.append("<span class=\"total\">共<span>");
+		sb.append(totalCount);
+		sb.append("</span>条记录</span>");
+		pageHtml=sb.toString();
+		System.out.println(pageHtml);
+		return pageHtml;
+		
+	}
 	
 }

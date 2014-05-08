@@ -12,9 +12,9 @@
 
       <ds name="errwe"
         driverClassName="com.mysql.jdbc.Driver"
-        url="jdbc:mysql://127.0.0.1:3306/stuinfo?useUnicode=true&amp;characterEncoding=UTF-8"
-        username="root"
-        password="root"
+        url="jdbc:mysql://10.0.1.38:3306/stuinfo?useUnicode=true&amp;characterEncoding=UTF-8"
+        username="newft"
+        password="newft"
         maxActive="50"
         maxIdle="50"
         maxWait="5000" />

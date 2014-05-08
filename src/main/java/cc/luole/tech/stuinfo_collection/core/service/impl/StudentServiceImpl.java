@@ -17,7 +17,7 @@ public class StudentServiceImpl extends BaseServiceImpl<Student> implements Stud
 	}
 
 	@Override
-	public List<Fusion> getListStudent() {
+	public List<Student> getListStudent() {
 		return this.list("student_get", new Object[]{});
 	}
 

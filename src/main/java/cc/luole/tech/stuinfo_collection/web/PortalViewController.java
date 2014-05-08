@@ -53,15 +53,16 @@ public class PortalViewController extends BaseController{
 		SchoolQuestion sq = null;
 		if(listSq!=null){
 			model.addObject("flag", 0);
-			model.addObject("message", listSq);
+			model.addObject("question", listSq);
 			for (SchoolQuestion schoolQuestion : listSq) {
 				new SchoolQuestion();
 				System.out.println(schoolQuestion.getQuestion());
+				System.out.println(schoolQuestion.getAnswer());
 			}
 		}else{
 			model.addObject("flag", 1);
 		}
-		model.setViewName("showinfo");
+		model.setViewName("/portal/collect");
 		return model;
 	}
 	
@@ -79,8 +80,7 @@ public class PortalViewController extends BaseController{
 		String stuAnswer=request.getParameter("stuanswer");//学生回答
 		String stuApply=request.getParameter("stuapply");//类型 小学 初中
 		//判断空
-		if(!Util.notEmpty(stuName)|| !Util.notEmpty(stuSex) || !Util.notEmpty(stuBirthday) || !Util.notEmpty(stuHuji) || 
-				Util.notEmpty(stuHomeAddr) || !Util.notEmpty(scQuestId)|| !Util.notEmpty(stuAnswer)){
+		if(!Util.notEmpty(stuName)|| !Util.notEmpty(stuSex) || !Util.notEmpty(stuBirthday) || !Util.notEmpty(stuHuji) || !Util.notEmpty(stuHomeAddr) || !Util.notEmpty(scQuestId)|| !Util.notEmpty(stuAnswer)){
 			return this.jsonError("所填数据项不完整");
 		}
 		
@@ -133,10 +133,10 @@ public class PortalViewController extends BaseController{
 				Parent mparent = new Parent();
 				mparent.setName(mname);
 				if(Util.notEmpty(frelation)){
-					fparent.setRelation(Util.toString4StringRelation(frelation));
+					mparent.setRelation(Util.toString4StringRelation(mrelation));
 				}
 				if(Util.notEmpty(mtelphone)){
-					fparent.setTelphone(Long.parseLong(mtelphone));
+					mparent.setTelphone(Long.parseLong(mtelphone));
 				}
 				mparent.setStuid(Long.parseLong(stuid.toString()));
 				mparent.setJobTitle(mjobTitle);

@@ -122,7 +122,12 @@ public class Util {
 	}
 	
 	public static Date toSqlDate4String(String str){
-		Date date=java.sql.Date.valueOf(str);
+		Date date=null;
+		try {
+			date=java.sql.Date.valueOf(str);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		return date;
 	}
 	
@@ -136,11 +141,11 @@ public class Util {
 		return id;
 	}
 	
-	public static int toInt4String(HttpServletRequest request,String sex){
-		String s=request.getParameter(sex);
+	public static int toInt4String(HttpServletRequest request,String str){
+		String s=request.getParameter(str);
 		int par=0;
 		if(!notEmpty(s)){
-			s="1";
+			s="0";
 		}
 		try {
 			par=Integer.parseInt(s);
@@ -149,5 +154,6 @@ public class Util {
 		}
 		return par;
 	}
+	
 
 }

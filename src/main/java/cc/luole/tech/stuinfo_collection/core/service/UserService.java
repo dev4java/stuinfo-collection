@@ -12,4 +12,7 @@ public interface UserService extends BaseService<User>{
 	public Page getPageUser(int pageNo,int pageSize);
 	
 	public List<User> getListUser();
+	
+	public List<User> getListUserInfos();
+	
 }

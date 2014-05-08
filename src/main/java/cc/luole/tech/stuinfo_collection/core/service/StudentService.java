@@ -21,6 +21,6 @@ public interface StudentService extends BaseService<Student>{
 
 	public Page getPageStudent(int pageNo,int pageSize);
 	
-	public List<Fusion> getListStudent();
+	public List<Student> getListStudent();
 
 }

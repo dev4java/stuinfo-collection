@@ -63,6 +63,7 @@ public class UserServiceImpl extends BaseServiceImpl<User>  implements UserServi
 				parent.setCompany(parent1.getCompany());
 				parent.setJobTitle(parent1.getJobTitle());
 				parent.setTelphone(parent1.getTelphone());
+				parent.setRelation(parent1.getRelation());
 				isParent.add(parent);
 			}
 			u.setParent(isParent);
@@ -105,6 +106,54 @@ public class UserServiceImpl extends BaseServiceImpl<User>  implements UserServi
 	public List<User> getListUser() {
 		// TODO Auto-generated method stub
 		return this.list("stu_get_list", new Object[]{});
+	}
+
+	@Override
+	public List<User> getListUserInfos() {
+		List<Student> listStu=studentService.getListStudent();
+		List<User> listUsers = new ArrayList<User>();
+		User usr=null;
+		if(listStu!=null){
+			for (Student stu : listStu) {
+				usr= new User();
+				usr.setuStuName(stu.getName());
+				usr.setuStuSex(Util.toString4intSex(stu.getSex()));
+				usr.setuStuBirthday(stu.getBirthday());
+				usr.setuStuHujiAddress(stu.getHujiAddress());
+				usr.setuStuAddress(stu.getAddress());
+				//问题
+				List<AnswerQuestion> listAns = answerQuestionService.getListAnswerQuestionsByStuid(stu.getId());
+				List<UserAnswer> listUa=new ArrayList<UserAnswer>();
+				List<Parent> listParent=new ArrayList<Parent>();
+				UserAnswer ua=null;
+				if(listAns!=null){
+					for (AnswerQuestion answerQuestion : listAns) {
+						ua=new UserAnswer();
+						SchoolQuestion schoolQuestion=schoolQuestionService.load(answerQuestion.getQuestionid());
+						if(schoolQuestion!=null){// 学校问题存在 问题状态有效 学生回答问题id相等
+							if(schoolQuestion.getStatus()==Constants.Status.VALID && schoolQuestion.getId()==answerQuestion.getQuestionid()){
+								ua.setQuestion(schoolQuestion.getQuestion());
+								ua.setAnswer(answerQuestion.getAnswer());
+								listUa.add(ua);
+							}
+						}
+						
+						
+					}
+					usr.setUserAnswer(listUa);
+				}
+				//父母
+				List<Parent> listP=parentService.getListParentsByStuid(stu.getId());
+				if(listP!=null){
+					/*for (Parent parent : listP) {
+						
+					}*/
+					usr.setParent(listP);
+				}				
+				listUsers.add(usr);	
+			}
+		}
+		return listUsers;
 	}
 
 }
