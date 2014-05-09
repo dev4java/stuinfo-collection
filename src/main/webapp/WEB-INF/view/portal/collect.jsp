@@ -5,13 +5,12 @@
 <%@include file="/WEB-INF/view/util/header.jsp" %>
 <script src="${path }/js/navHover.js" type="text/javascript"></script>
 <link href="${path }/css/commonWeb.css" rel="stylesheet">
+<script src="${path }/js/Calendar3.js" type="text/javascript"></script>
 <script src="${path }/js/all.js" type="text/javascript"></script>
-<!-- date -->
-<link type="text/css" rel="stylesheet" href="${path }/css/date/datepicker/jquery.ui.all.css"/>
-<script type="text/javascript" src="${path }/css/date/jquery-ui-1.9.2.custom.js"></script>
-<script type="text/javascript" src="${path }/css/date/jquery.ui.datepicker-zh-CN.js"></script>
+
+
 <script>
-jQuery(document).ready(function() {     
+jQuery(document).ready(function() {
 		$("#xxid").click("click",function(e){
 			//stu
 			var stuname=$(".input-txt.name").val();
@@ -35,37 +34,10 @@ jQuery(document).ready(function() {
 			var scqid=$("#qid").val();
 			var stuapply=$("#qdid").val();
 			var stuanswer=$("input[name='addr']:checked").next("label").html();
-			
-			//alert("stuname-"+stuname+"  stusex-"+stusex+"  stubirthday-"+stubirthday+"  stuhuju-"+stuhuju+"  stuhome-"+stuhome+"  frelation-"+frelation+"  fname-"+fname+"  fcompany-"+fcompany+"  fjobTitle-"+fjobTitle+"  ftelphone-"+ftelphone+"  mrelation-"+mrelation+"  mname-"+mname+"  mcompany-"+fcompany+"  mjobTitle-"+mjobTitle+"  mtelphone-"+mtelphone+"  scqid-"+scqid+"  stuanswer-"+stuanswer+"  stuapply-"+stuapply);
-			
 			if($('.input-txt').hasClass('input-error-txt')){
-				 //$("#propt-unfinished").css("display","block");
 					return false;
 				}
 			var inputTxt = $(".app-con").eq($(".tab-list li").index($(".tab-list li.current"))).find(".input-txt");
-			//alert(inputTxt.length);
-/* 			for(var i =0;i<inputTxt.length;i++){
-				if(inputTxt.eq(i).val() == ""){
-					$("#propt-unfinished,.mask").css("display","block");
-					alert("as");
-					return false;
-					break;
-				}else{
-					var sexRadio = $(".radio-btn[name='sex']:checked").length,
-						addrRadio = $(".radio-btn[name='addr']:checked").length,
-						valArr = sexRadio + addrRadio;
-					alert(valArr);
-					if(valArr !=2){
-						$("#propt-unfinished,.mask").css("display","block");
-						return false;
-					}
-					else{
-						$("#propt-unfinished,.mask").css("display","none");
-						return true;
-					}
-				}
-
-			} */
 			if(stuname=="" || stusex=="" || stubirthday=="" ||  stuhuju=="" || stuhome=="" ||
 			   frelation=="" ||fname=="" ||fcompany=="" ||fjobTitle=="" ||ftelphone=="" ||
 			   mrelation=="" ||mname=="" || fcompany=="" ||mjobTitle=="" ||mtelphone=="" ||
@@ -89,7 +61,7 @@ jQuery(document).ready(function() {
 	            data:{'stuname':stuname,'stusex':stusex,'stubirthday':stubirthday,'stuhuju':stuhuju,'stuhome':stuhome,
 	            	  'frelation':frelation,'fname':fname,'fcompany':fcompany,'fjobTitle':fjobTitle,'ftelphone':ftelphone,
 	            	  'mrelation':mrelation,'mname':mname,'mcompany':mcompany,'mjobTitle':mjobTitle,'mtelphone':mtelphone,
-	            	  'scqid':scqid,'stuapply':stuapply,'stuanswer':stuanswer,
+	            	  'scqid':scqid,'stuapply':stuapply,'stuanswer':stuanswer
 	            },    
 	            dataType: 'json', 
 	            success: function(data,statusText){
@@ -113,30 +85,6 @@ jQuery(document).ready(function() {
 	            } 
 	        }); 
 	}); 
-			//----------日历控件 ------------------------------
-			$("#date").datepicker({
-				inline: false,  
-			    disabled: false,  
-			    dateFormat: 'yy-mm-dd',         // 设置日期格式
-			    changeMonth: true,              // 下拉框选择月份  
-			    changeYear: true,               // 下拉框选择年份
-			    minDate: new Date(1950, 1-1, 1),    // 本控件可以选的最小日期  
-			    maxDate: new Date(),  // 本控件可以选的最大日期
-			    yearRange:'c-100:c+20',     // 下拉列表中年份范围  
-			    showOtherMonths: true,          // 显示其他月份的日期  
-			    selectOtherMonths: false,       // 允许选择其他月份的日期  
-			    showMonthAfterYear: true,       // 是否在面板的头部年份后面显示月份  
-			    nextText: '下个月',                // 更改按钮提示文本  
-			    prevText: '上一月',                // 更改按钮提示文本  
-			    closeText: '关闭',                // 更改按钮提示文本  
-			    currentText: '今天',              // 更改按钮提示文本  
-			    showButtonPanel: true,          // 显示按钮面板  
-			    buttonText: '日历',               // 日历按钮提示文本  
-			    showOn: "both",               // 日历按钮触发 ['focus', 'button', 'both'] 三选一  
-			    buttonImage: "${path}/css/date/datepicker/images/calendar.gif", // 日历按钮
-			    buttonImageOnly: true           // 按钮不显示文字
-			});
-			$("#ui-datepicker-div").css('font-size','0.75em');
 });
 </script>
 <body>
@@ -178,7 +126,8 @@ jQuery(document).ready(function() {
 										</span> --%>
 										<span class="tit">出生日期</span>
 										<span class="datepicker date"> 
-											 <input type="text" name="date" id="date" class="input-txt birthday" readonly="readonly" placeholder ="日期" />
+											<!--  <input type="text" name="date" id="date" class="input-txt birthday" readonly="readonly" placeholder ="日期" /> -->
+											<input class="input-txt birthday" name="date" id="date" type="text" readonly="readonly" onclick="new Calendar().show(this);"  />
 										</span>
 									</li>
 									<li class="clearfix">
@@ -380,6 +329,12 @@ jQuery(document).ready(function() {
 			<p><a href="javascript:;" class="propt-close-btn">关&nbsp;闭</a></p>
 		</div>
 		<!--未完成全部信息弹窗 end-->
+		<!--ie 6-->
+		<div class="propt" id="ie6id" style="display:none;">
+			<p class="propt-msg">您的浏览器版本太低,为了不影响您的体验,推荐使用IE7以上版本的浏览器</p>
+			<p></p>
+		</div>
+		<!--ie 6 end-->
 		<!--成功录入弹窗 begin-->
 		<div class="propt" id="propt-success" style="display:none;">
 			<p class="propt-msg">您提交的信息已经成功收录，感谢您的配合！</p>

@@ -347,7 +347,7 @@ public class AdminController extends BaseController{
 		int end=1;
 		StringBuilder sb = new StringBuilder();
 		sb.append("");
-		sb.append("<a class=\"home\" href=\"javascript:void(0)\" id=\"homeid\">首页</a>");
+		sb.append("<a class=\"home\" href=\"#\" id=\"homeid\">首页</a>");
 		sb.append("<a  id=\"upid\" class=\"prev\" href=\"#\">上一页</a>");
 		//number-cur
 		if(totalPageCount>8){
@@ -548,7 +548,7 @@ public class AdminController extends BaseController{
 			}
 		}
 		sb.append("<a id=\"nextid\" class=\"next next-cur\" href=\"#\">下一页</a>");
-		sb.append("<a id=\"endid\"  class=\"end\" href=\"javascript:void(0)\">末页</a>");
+		sb.append("<a id=\"endid\"  class=\"end\" href=\"#\">末页</a>");
 		/*sb.append("<span class=\"total\">共<span>");
 		sb.append(totalCount);
 		sb.append("</span>条记录</span>");*/

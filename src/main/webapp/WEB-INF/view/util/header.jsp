@@ -8,5 +8,11 @@
 	<script src="${path }/js/jquery.min.js" type="text/javascript"></script>
 	<!--[if IE 6]>
 		<script src="${path }/js/pngfix.js"></script>
+		<script type="javascript">
+		$(function(){
+			$("#ie6id,.mask").css("display","block");
+			$("#ie6id").css("top",$(document).scrollTop()+200);
+		});
+		</script>
 	<![endif]-->
 </head>
