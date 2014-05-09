@@ -19,22 +19,22 @@
 		<div id="nav">
 			<div class="nav-inner">
 				<ul class="nav-list clearfix">
-					<li class="item"><a href="/main.htm"><span>首页</span></a></li>
+					<li class="item"><a href="${home}/main.htm"><span>首页</span></a></li>
 					<li class="item">
 						<a class="current" href="###">学校概况<i class="png-bg"></i></a>
 						<div class="nav-list" style="display: none;">
 							<dl class="clearfix">
 								<dt class="item">
-									<a href="/xxjj/index.htm">学校简介</a>
+									<a href="${home}/xxjj/index.htm">学校简介</a>
 								</dt>
 								<dt class="item">
-									<a href="/zzjg/index.htm">组织机构</a>
+									<a href="${home}/zzjg/index.htm">组织机构</a>
 								</dt>
 								<dt class="item">
-									<a href="/xxzc/index.htm">学校章程</a>
+									<a href="${home}/xxzc/index.htm">学校章程</a>
 								</dt>
 								<dt class="item">
-									<a href="/lxwm/index.htm">联系我们</a>
+									<a href="${home}/lxwm/index.htm">联系我们</a>
 								</dt>
 							</dl>
 						</div>
@@ -44,13 +44,13 @@
 						<div class="nav-list" style="display: none;">
 							<dl class="clearfix">
 								<dt class="item">
-									<a href="/xxkx/index.htm">学校快讯</a>
+									<a href="${home}/xxkx/index.htm">学校快讯</a>
 								</dt>
 								<dt class="item">
-									<a href="/mtsl/index.htm">媒体速览</a>
+									<a href="${home}/mtsl/index.htm">媒体速览</a>
 								</dt>
 								<dt class="item">
-									<a href="/xwgk/index.htm">校务公开</a>
+									<a href="${home}/xwgk/index.htm">校务公开</a>
 								</dt>
 							</dl>
 						</div>
@@ -60,19 +60,19 @@
 						<div class="nav-list" style="display: none;">
 							<dl class="clearfix">
 								<dt class="item">
-									<a href="/jsfc/index.htm">教师风采</a>
+									<a href="${home}/jsfc/index.htm">教师风采</a>
 								</dt>
 								<dt class="item">
-									<a href="/jyjx/index.htm">教育教学</a>
+									<a href="${home}/jyjx/index.htm">教育教学</a>
 								</dt>
 								<dt class="item">
-									<a href="/xbyx/index.htm">校本研训</a>
+									<a href="${home}/xbyx/index.htm">校本研训</a>
 								</dt>
 								<dt class="item">
-									<a href="/kcjs/index.htm">课程建设</a>
+									<a href="${home}/kcjs/index.htm">课程建设</a>
 								</dt>
 								<dt class="item">
-									<a href="/jyky/index.htm">教育科研</a>
+									<a href="${home}/jyky/index.htm">教育科研</a>
 								</dt>
 							</dl>
 						</div>
@@ -82,19 +82,19 @@
 						<div class="nav-list" style="display: none;">
 							<dl class="clearfix">
 								<dt class="item">
-									<a href="/czda/index.htm">成长档案</a>
+									<a href="${home}/czda/index.htm">成长档案</a>
 								</dt>
 								<dt class="item">
-									<a href="/sthd/index.htm">社团活动</a>
+									<a href="${home}/sthd/index.htm">社团活动</a>
 								</dt>
 								<dt class="item">
-									<a href="/xxhj/index.htm">星星火炬</a>
+									<a href="${home}/xxhj/index.htm">星星火炬</a>
 								</dt>
 								<dt class="item">
-									<a href="/tqpp/index.htm">团旗飘飘</a>
+									<a href="${home}/tqpp/index.htm">团旗飘飘</a>
 								</dt>
 								<dt class="item">
-									<a href="/xyxy/index.htm">校园心语</a>
+									<a href="${home}/xyxy/index.htm">校园心语</a>
 								</dt>
 							</dl>
 						</div>
@@ -104,16 +104,16 @@
 						<div class="nav-list" style="display: none;">
 							<dl class="clearfix">
 								<dt class="item">
-									<a href="/xxzl/index.htm">学习专栏</a>
+									<a href="${home}/xxzl/index.htm">学习专栏</a>
 								</dt>
 								<dt class="item">
-									<a href="/dyfc/index.htm">党员风采</a>
+									<a href="${home}/dyfc/index.htm">党员风采</a>
 								</dt>
 								<dt class="item">
-									<a href="/zbsh/index.htm">支部生活</a>
+									<a href="${home}/zbsh/index.htm">支部生活</a>
 								</dt>
 								<dt class="item">
-									<a href="/qtdt/index.htm">群团动态</a>
+									<a href="${home}/qtdt/index.htm">群团动态</a>
 								</dt>
 							</dl>
 						</div>
@@ -122,8 +122,8 @@
 						<a href="###">招生招聘<i class="png-bg"></i></a>
 						<div class="nav-list" style="display: none;">
 							<dl class="clearfix">
-								<dt class="item"><a href="/zstg/index.htm">招生通告</a></dt>
-								<dt class="item"><a href="/zpqs/index.htm">招聘启事</a></dt>
+								<dt class="item"><a href="${home}/zstg/index.htm">招生通告</a></dt>
+								<dt class="item"><a href="${home}/zpqs/index.htm">招聘启事</a></dt>
 							</dl>
 						</div>
 					</li>
@@ -132,19 +132,19 @@
 						<div class="nav-list" style="display: none;">
 							<dl class="clearfix">
 								<dt class="item">
-									<a href="/jxhd/index.htm">家校互动</a>
+									<a href="${home}/jxhd/index.htm">家校互动</a>
 								</dt>
 								<dt class="item">
-									<a href="/xjjl/index.htm">校际交流</a>
+									<a href="${home}/xjjl/index.htm">校际交流</a>
 								</dt>
 								<dt class="item">
-									<a href="/xylt/index.htm">校园论坛</a>
+									<a href="${home}/xylt/index.htm">校园论坛</a>
 								</dt>
 								<dt class="item">
-									<a href="/jsbk/index.htm">教师博客</a>
+									<a href="${home}/jsbk/index.htm">教师博客</a>
 								</dt>
 								<dt class="item">
-									<a href="/zxly/index.htm">在线留言</a>
+									<a href="${home}/zxly/index.htm">在线留言</a>
 								</dt>
 							</dl>
 						</div>
@@ -154,19 +154,19 @@
 						<div class="nav-list" style="display: none;">
 							<dl class="clearfix">
 								<dt class="item">
-									<a href="/jyzy/index.htm">教育资源</a>
+									<a href="${home}/jyzy/index.htm">教育资源</a>
 								</dt>
 								<dt class="item">
-									<a href="/zcfg/index.htm">政策法规</a>
+									<a href="${home}/zcfg/index.htm">政策法规</a>
 								</dt>
 								<dt class="item">
-									<a href="/gxsx/index.htm">共享书香</a>
+									<a href="${home}/gxsx/index.htm">共享书香</a>
 								</dt>
 								<dt class="item">
-									<a href="/jspj/index.htm">教师评价</a>
+									<a href="${home}/jspj/index.htm">教师评价</a>
 								</dt>
 								<dt class="item">
-									<a href="/xspj/index.htm">学生评价</a>
+									<a href="${home}/xspj/index.htm">学生评价</a>
 								</dt>
 							</dl>
 						</div>

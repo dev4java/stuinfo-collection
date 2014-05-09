@@ -55,7 +55,10 @@ public class AdminController extends BaseController{
 	/** serialVersionUID*/
 	private static final long serialVersionUID = 1L;
 	
-
+	@RequestMapping(value="/list",method=RequestMethod.GET)
+	public ModelAndView getlu(HttpServletRequest request,HttpServletResponse response,HttpSession session){
+		return this.listUser(request, response, session);
+	}
 	
 	@RequestMapping("/list")
 	public ModelAndView listUser(HttpServletRequest request,HttpServletResponse response,HttpSession session){
@@ -92,7 +95,7 @@ public class AdminController extends BaseController{
 			model.addObject("pageSize",pageSize);
 			String pageHtml =this.pageHtml(flag,pageNo, totalCount, totalPageCount);
 			model.addObject("pageHtml", pageHtml);
-			System.out.println(page.getCurrentPageNo()+"----------"+page.getTotalCount()+"---------"+pageHtml);
+			System.out.println("当前总页数="+page.getTotalPageCount()+"  当前第页数="+page.getCurrentPageNo()+"   总记录数="+page.getTotalCount()+"---------"+pageHtml);
 		}
 		model.setViewName("/admin/list");
 		return model;
@@ -360,7 +363,7 @@ public class AdminController extends BaseController{
 					sb.append(i);
 					sb.append("</a>");
 				}
-				sb.append("...");
+				sb.append("<span class=\"number\">...</span>");
 				sb.append("<a class=\"number\" onClick=\"go(");
 				sb.append(totalPageCount);
 				sb.append(");\">");
@@ -399,7 +402,7 @@ public class AdminController extends BaseController{
 								sb.append(i);
 								sb.append("</a>");
 							}
-							sb.append("...");
+							sb.append("<span class=\"number\">...</span>");
 							sb.append("<a class=\"number\" onClick=\"go(");
 							sb.append(totalPageCount);
 							sb.append(");\">");
@@ -412,7 +415,7 @@ public class AdminController extends BaseController{
 						if(totalPageCount<s1){
 							sb.append("<a class=\"number\" onClick=\"go(1);\">1</a> ");
 							
-							sb.append("...");
+							sb.append("<span class=\"number\">...</span>");
 							for (int ss=pageNo-c; ss <= totalPageCount; ss++) {//for (int ss=pageNo-c+1; ss <= totalPageCount; ss++) {
 								//System.out.println("-------------"+ss);
 								/*sb.append("<a class=\"number\" onClick=\"go(");*/
@@ -439,7 +442,7 @@ public class AdminController extends BaseController{
 								sb.append(i);
 								sb.append("</a>");
 							}
-							sb.append("...");
+							sb.append("<span class=\"number\">...</span>");
 							sb.append("<a class=\"number\" onClick=\"go(");
 							sb.append(totalPageCount);
 							sb.append(");\">");
@@ -451,7 +454,7 @@ public class AdminController extends BaseController{
 						s=pageNo+8;
 						if(totalPageCount<s1){
 							sb.append("<a class=\"number\" onClick=\"go(1);\">1</a> ");
-							sb.append("...");
+							sb.append("<span class=\"number\">...</span>");
 							for (int ss=pageNo-c; ss <= totalPageCount; ss++) {
 								//System.out.println("-------------"+ss);
 								/*sb.append("<a class=\"number\" onClick=\"go(");*/
@@ -478,7 +481,7 @@ public class AdminController extends BaseController{
 								sb.append(i);
 								sb.append("</a>");
 							}
-							sb.append("...");
+							sb.append("<span class=\"number\">...</span>");
 							sb.append("<a class=\"number\" onClick=\"go(");
 							sb.append(totalPageCount);
 							sb.append(");\">");
@@ -489,7 +492,7 @@ public class AdminController extends BaseController{
 					}
 				}else if(totalPageCount<s1){
 					sb.append("<a class=\"number\" onClick=\"go(1);\">1</a> ");
-					sb.append("...");
+					sb.append("<span class=\"number\">...</span>");
 					for (int ss=pageNo-c+1; ss <= totalPageCount; ss++) {
 						//System.out.println("-------------"+ss);
 						/*sb.append("<a class=\"number\" onClick=\"go(");*/
@@ -520,7 +523,7 @@ public class AdminController extends BaseController{
 						sb.append("</a>");
 					}
 					if(s1<totalPageCount){
-						sb.append("...");
+						sb.append("<span class=\"number\">...</span>");
 						sb.append("<a class=\"number\" onClick=\"go(");
 						sb.append(totalPageCount);
 						sb.append(");\">");
@@ -546,9 +549,9 @@ public class AdminController extends BaseController{
 		}
 		sb.append("<a id=\"nextid\" class=\"next next-cur\" href=\"#\">下一页</a>");
 		sb.append("<a id=\"endid\"  class=\"end\" href=\"javascript:void(0)\">末页</a>");
-		sb.append("<span class=\"total\">共<span>");
+		/*sb.append("<span class=\"total\">共<span>");
 		sb.append(totalCount);
-		sb.append("</span>条记录</span>");
+		sb.append("</span>条记录</span>");*/
 		pageHtml=sb.toString();
 		System.out.println(pageHtml);
 		return pageHtml;

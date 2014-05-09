@@ -3,11 +3,11 @@
 <!DOCTYPE html>    
 <html>
 <%@include file="/WEB-INF/view/util/header.jsp" %>
-<script src="${ctx }/portal/js/pngfix.js" type="text/javascript"></script>
-<script src="${ctx }/portal/js/login.js" type="text/javascript"></script>
-<link href="${ctx }/portal/css/common.css" rel="stylesheet">
-<script src="${ctx }/portal/js/jquery.md5.js" type="text/javascript"></script>
-<script src="${ctx }/portal/js/all.js" type="text/javascript"></script>
+<script src="${path }/js/pngfix.js" type="text/javascript"></script>
+<script src="${path }/js/login.js" type="text/javascript"></script>
+<link href="${path }/css/common.css" rel="stylesheet">
+<script src="${path }/js/jquery.md5.js" type="text/javascript"></script>
+<script src="${path }/js/all.js" type="text/javascript"></script>
 	<script>
 		//detail
 			function detail(obj){
@@ -25,6 +25,14 @@
 		//del
 			function delstu(){
 			var obj=$("#huid").val();
+			var didv=$("#xtid tr").length - 1;
+			$("#did").val(didv);
+			/* var pageNo    =$("#curNoid").val();//当前页码
+			var pcurTotal =$("#totalid").val();//总页码 
+			if(pcurTotal<pageNo){
+				pageNo=pcurTotal;
+			} */
+			
 				if(obj=="" || obj==null){
 					return false;
 				}
@@ -35,8 +43,14 @@
 		            data:{'uid':obj},    
 		            dataType: 'json', 
 		            success: function(data,statusText){
-		              if(data.status==0){
-		            	  window.location.reload();
+		              if(data.status==0){		    
+		            	  if(didv==1){
+		            		  var url="/admin/list?pageNo=1&pageSize=10&flag=next";
+			            	  window.location.href=url; 
+		            	  }else{
+		            		  window.location.reload();
+		            	  }
+		            	 
 		              }else{
 		            	 $("#errid").css("display","block");
 		              }
@@ -59,7 +73,11 @@
 		var total = ${page.totalCount};
 		if (total == 0)return;
 		var action = $("#jumpForm").attr("action");
+		if(curTotal<pageNo){
+			pageNo=curTotal;
+		}
 		action = action + "?pageNo=" + pageNo + "&pageSize=" + pageSize+"&flag="+flag;
+		//alert(action);
         $("#jumpForm").attr("action",action);
         $("#jumpForm").submit();
 	}
@@ -184,7 +202,7 @@
 					<div class="app-con">
 						<p class="return-info clearfix"><a href="javascript:;">下载全部数据</a></p>
 						<div class="table_wrap">
-							<table>
+							<table id="xtid">
 								<tr class="table-head">
 									<th class="w185">学生姓名</th>
 									<th class="w170">生日</th>
@@ -222,6 +240,8 @@
 							<div class="page">
 								${pageHtml }
 								<input type="hidden" id="curNoid" value="${page.currentPageNo}" />
+								<input type="hidden" id="totalid" value="${page.totalPageCount}" />
+								<input type="hidden" id="did" value="" />
 									<!-- <a class="home" href="javascript:void(0)" id="homeid">首页</a>
 									<a class="prev" href="javascript:void(0)" id="upid">上一页</a>
 									<a class="next" href="" id="nextid" id="nextid">下一页</a>

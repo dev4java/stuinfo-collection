@@ -102,6 +102,7 @@ public class BaseController extends DispatcherServlet{
 			String dbPwd=aUsr.getPassword();
 			if(password.equals(dbPwd)){
 				session.setAttribute("isLogin", aUsr);
+				session.setMaxInactiveInterval(30*60);//半小时
 				return this.jsonSuccess("suc", aUsr);
 			}else{
 				return this.jsonError("密码错误");

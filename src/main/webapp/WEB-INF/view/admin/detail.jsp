@@ -3,8 +3,8 @@
 <!DOCTYPE html>    
 <html>
 <%@include file="/WEB-INF/view/util/header.jsp" %>
-<link href="${ctx }/portal/css/common.css" rel="stylesheet">
-<script src="${ctx }/portal/js/all.js" type="text/javascript"></script>
+<link href="${path }/css/common.css" rel="stylesheet">
+<script src="${path }/js/all.js" type="text/javascript"></script>
 	<script>
 	</script>
 <body>

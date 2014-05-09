@@ -3,13 +3,13 @@
 <!DOCTYPE html>    
 <html>
 <%@include file="/WEB-INF/view/util/header.jsp" %>
-<script src="${ctx }/portal/js/navHover.js" type="text/javascript"></script>
-<link href="${ctx }/portal/css/commonWeb.css" rel="stylesheet">
-<script src="${ctx }/portal/js/all.js" type="text/javascript"></script>
+<script src="${path }/js/navHover.js" type="text/javascript"></script>
+<link href="${path }/css/commonWeb.css" rel="stylesheet">
+<script src="${path }/js/all.js" type="text/javascript"></script>
 <!-- date -->
-<link type="text/css" rel="stylesheet" href="${ctx }/portal/css/date/datepicker/jquery.ui.all.css"/>
-<script type="text/javascript" src="${ctx }/portal/css/date/jquery-ui-1.9.2.custom.js"></script>
-<script type="text/javascript" src="${ctx }/portal/css/date/jquery.ui.datepicker-zh-CN.js"></script>
+<link type="text/css" rel="stylesheet" href="${path }/css/date/datepicker/jquery.ui.all.css"/>
+<script type="text/javascript" src="${path }/css/date/jquery-ui-1.9.2.custom.js"></script>
+<script type="text/javascript" src="${path }/css/date/jquery.ui.datepicker-zh-CN.js"></script>
 <script>
 jQuery(document).ready(function() {     
 		$("#xxid").click("click",function(e){
@@ -71,6 +71,7 @@ jQuery(document).ready(function() {
 			   mrelation=="" ||mname=="" || fcompany=="" ||mjobTitle=="" ||mtelphone=="" ||
 			   scqid=="" ||stuanswer=="" ||stuapply==""){
 					$("#propt-unfinished,.mask").css("display","block");
+					$("#propt-unfinished").css("top",$(document).scrollTop()+200);
 				return false;
 			}
 			var sexRadio = $(".radio-btn[name='sex']:checked").length,
@@ -78,6 +79,7 @@ jQuery(document).ready(function() {
 			valArr = sexRadio + addrRadio;
 			if(valArr !=2){
 				$("#propt-unfinished,.mask").css("display","block");
+				$("#propt-unfinished").css("top",$(document).scrollTop());
 				return false;
 			}
 			$.ajax({  
@@ -97,6 +99,7 @@ jQuery(document).ready(function() {
 	            	  $(".radio-btn[name='sex']:checked").removeAttr("checked");
 	            	  $(".radio-btn[name='addr']:checked").removeAttr("checked");
 	            	  $("#propt-success,.mask").css("display","block");
+	            	  $("#propt-success").css("top",$(document).scrollTop());
 	            	  //window.location.reload();
 	              }else{
 	            	 $("#propt-success").css("display","none");
@@ -130,7 +133,7 @@ jQuery(document).ready(function() {
 			    showButtonPanel: true,          // 显示按钮面板  
 			    buttonText: '日历',               // 日历按钮提示文本  
 			    showOn: "both",               // 日历按钮触发 ['focus', 'button', 'both'] 三选一  
-			    buttonImage: "${ctx}/portal/css/date/datepicker/images/calendar.gif", // 日历按钮
+			    buttonImage: "${path}/css/date/datepicker/images/calendar.gif", // 日历按钮
 			    buttonImageOnly: true           // 按钮不显示文字
 			});
 			$("#ui-datepicker-div").css('font-size','0.75em');
@@ -171,7 +174,7 @@ jQuery(document).ready(function() {
 										<%-- <span class="tit">出生日期</span>
 										<span class="date">
 											<input type="text" class="input-txt birthday" />
-											<img class="ui-datepicker-trigger" src="${ctx }/portal/imgs/calendar.gif" alt="日历" title="日历">
+											<img class="ui-datepicker-trigger" src="${path }/imgs/calendar.gif" alt="日历" title="日历">
 										</span> --%>
 										<span class="tit">出生日期</span>
 										<span class="datepicker date"> 
@@ -266,7 +269,7 @@ jQuery(document).ready(function() {
 					</div>
 					<!--小学申请表 end-->
 					<!--中学申请表 begin-->
-					<div class="app-con" style="display:none;">
+					<%-- <div class="app-con" style="display:none;">
 						<form method="post" action="">
 							<p class="tips">以下所有信息均为必填项，请各位家长朋友确认全部填写完成后再进行提交，谢谢！</p>
 							<div class="module">
@@ -288,7 +291,7 @@ jQuery(document).ready(function() {
 										<span class="tit">出生日期</span>
 										<span class="date">
 											<input type="text" class="input-txt birthday" />
-											<img class="ui-datepicker-trigger" src="${ctx }/portal/imgs/calendar.gif" alt="日历" title="日历">
+											<img class="ui-datepicker-trigger" src="${path }/imgs/calendar.gif" alt="日历" title="日历">
 										</span>
 									</li>
 									<li class="clearfix">
@@ -362,7 +365,7 @@ jQuery(document).ready(function() {
 							<input type="button" id="czid" value="提交申请" class="submit-btn" />
 						</form>
 						<p class="statement">特别声明：本系统仅是我校统计入学意向使用，不作为正式录取依据。</p>
-					</div>
+					</div> --%>
 					<!--中学申请表 end-->
 				</div>
 			</div>
