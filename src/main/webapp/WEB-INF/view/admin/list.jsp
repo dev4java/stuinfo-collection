@@ -200,7 +200,7 @@
 					</ul>
 					<!--小学申请信息 begin-->
 					<div class="app-con">
-						<p class="return-info clearfix"><a href="javascript:;">下载全部数据</a></p>
+						<p class="return-info clearfix"><a href="/admin/download">下载全部数据</a></p>
 						<div class="table_wrap">
 							<table id="xtid">
 								<tr class="table-head">

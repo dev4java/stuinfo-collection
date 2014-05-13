@@ -1,11 +1,7 @@
 package cc.luole.tech.stuinfo_collection.web;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,28 +9,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import cc.luole.sns.tools.commons.Page;
+import cc.luole.tech.stuinfo_collection.core.download.DownLoadService;
 import cc.luole.tech.stuinfo_collection.core.dto.User;
-import cc.luole.tech.stuinfo_collection.core.dto.UserAnswer;
-import cc.luole.tech.stuinfo_collection.core.model.AdminUsr;
 import cc.luole.tech.stuinfo_collection.core.model.AnswerQuestion;
 import cc.luole.tech.stuinfo_collection.core.model.Parent;
 import cc.luole.tech.stuinfo_collection.core.model.SchoolQuestion;
 import cc.luole.tech.stuinfo_collection.core.model.Student;
-import cc.luole.tech.stuinfo_collection.core.service.AnswerQuestionService;
-import cc.luole.tech.stuinfo_collection.core.service.ParentService;
-import cc.luole.tech.stuinfo_collection.core.service.SchoolQuestionService;
-import cc.luole.tech.stuinfo_collection.core.service.StudentService;
-import cc.luole.tech.stuinfo_collection.core.service.UserService;
-import cc.luole.tech.stuinfo_collection.util.ExcelUtil;
-import cc.luole.tech.stuinfo_collection.util.ExcelUtilFormat;
+import cc.luole.tech.stuinfo_collection.core.service.DownloadStuService;
 import cc.luole.tech.stuinfo_collection.util.Util;
 
 /**
@@ -50,7 +37,9 @@ import cc.luole.tech.stuinfo_collection.util.Util;
 @Controller
 @RequestMapping("/admin")
 public class AdminController extends BaseController{
-
+	
+	@Autowired
+	public DownLoadService  downLoadService ;
 	
 	/** serialVersionUID*/
 	private static final long serialVersionUID = 1L;
@@ -177,126 +166,9 @@ public class AdminController extends BaseController{
 			//return this.jsonError("请先登陆");
 			return this.getLogin();
 		}
-		List<ExcelUtilFormat> formats = new ArrayList<ExcelUtilFormat>();
-		 	HttpHeaders headers = new HttpHeaders();
-	        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-	        List<User> listU =userService.getListUserInfos();
-    		//------------------------------------------------------------------------------------------------------
-	       /* List<Parent> listParent=null;
-	        List<UserAnswer> listUa=null;
-	        ExcelUtilFormat parentName=null;
-	        ExcelUtilFormat company=null;
-	        ExcelUtilFormat jobTitle=null;
-	        ExcelUtilFormat telphone=null;
-	        for (User user : listU) {
-	        	listParent=user.getParent();
-	        	if(listParent!=null){
-	        		for (Parent p : listParent) {
-	        			int guanxi=p.getRelation();
-	        			if(guanxi==1){
-	        				parentName = new ExcelUtilFormat("父亲", 10, "name");
-        		    		formats.add(parentName);
-	        			}else{
-	        				parentName = new ExcelUtilFormat("母亲", 10, "name");
-        		    		formats.add(parentName);
-	        			}
-	        			company = new ExcelUtilFormat("工作单位", 10, "company");
-    		    		formats.add(company);
-    		    		jobTitle = new ExcelUtilFormat("工作职务", 10, "jobTitle");
-    		    		formats.add(jobTitle);
-    		    		telphone = new ExcelUtilFormat("手机", 10, "telphone");
-    		    		formats.add(telphone);	
-					}
-	        	}
-			}
-	        ExcelUtilFormat question=null;
-	        ExcelUtilFormat answer=null;
-	        for (User user : listU) {
-	        	listUa=user.getUserAnswer();
-	        	if(listUa!=null){
-	        		for (UserAnswer userAnswer : listUa) {
-	        			question = new ExcelUtilFormat(userAnswer.getQuestion(), 40, "question");
-			    		formats.add(question);
-			    		answer = new ExcelUtilFormat(userAnswer.getAnswer(), 40, "answer");
-			    		formats.add(answer);
-					}
-	        	}
-			}
-	    	List<Object> listObj=new ArrayList<Object>();
-    		listObj.add(listU);
-    		listObj.add(listUa);
-    		listObj.add(listParent);*/
-    		//------------------------------------------------------------------------------------------------------
-	        byte[] bytes =null;
-	    		String sheetName="students.xls";
-	    		//List<User> courseList = new ArrayList<User>();
-	    		
-	    		ExcelUtilFormat course = new ExcelUtilFormat("孩子姓名", 10, "uStuName");
-	    		formats.add(course);
-	    		ExcelUtilFormat classroomTeacher = new ExcelUtilFormat("性别", 10, "uStuSex");
-	    		formats.add(classroomTeacher);
-	    		ExcelUtilFormat teacherSourceName = new ExcelUtilFormat("生日", 20, "uStuBirthday");
-	    		formats.add(teacherSourceName);
-	    		ExcelUtilFormat address = new ExcelUtilFormat("户口所在地", 30, "uStuHujiAddress");
-	    		formats.add(address);
-	    		ExcelUtilFormat managementTeacher = new ExcelUtilFormat("家庭住址", 30, "uStuAddress");
-	    		formats.add(managementTeacher);
-	    		/*ExcelUtilFormat typeName = new ExcelUtilFormat("是否租住", 10, "typeName");
-	    		formats.add(typeName);
-	    		
-	    		ExcelUtilFormat grade = new ExcelUtilFormat("年级", 10, "grade");
-	    		formats.add(grade);
-	    		ExcelUtilFormat ext = new ExcelUtilFormat("上线人数", 10, "ext");
-	    		formats.add(ext);*/
-	    		
-//	    		headers.setContentDispositionFormData("attachment",sheetName);
-	    		/*do
-	    		{
-	    			Page p = this.courseGroupService.getAllCoursebyDelete(Constants.Deleted.NORMAL,pageNo, pageSize);
-	        		totalPage = p.getTotalPageCount();
-	        		p = this.toCourseDto(p);
-	        		courseList.addAll((List<CourseDto>)p.getResult());
-	        		pageNo++;
-	    		}
-	    		while(pageNo<=totalPage);*/
-	    	
-	    		headers.setContentDispositionFormData("attachment",sheetName);
-	    		try {
-	    			ByteArrayOutputStream bos = ExcelUtil.madeSingleSheetExcel(listU, User.class, formats, sheetName);
-	    			bytes = bos.toByteArray();
-				} catch (Exception e) {
-					logger.error("下载数据出错！", e);
-				}
-//	        return new ResponseEntity<byte[]>(bytes,headers, HttpStatus.CREATED);
-		        OutputStream os = null;
-				try {
-					os = response.getOutputStream();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  
-			    try {  
-			    	response.reset();  
-			    	response.setHeader("Content-Disposition", "attachment; filename="+sheetName);  
-			    	response.setContentType("application/octet-stream; charset=utf-8");  
-			        try {
-						os.write(bytes);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}  
-			        try {
-						os.flush();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}  
-			    } finally {  
-			        if (os != null) {  
-			            os.close();  
-			        }  
-			    }
-				return null;  
+		downLoadService.exportXLS(response);  
+		
+		return null;  
 		
 	}
 	

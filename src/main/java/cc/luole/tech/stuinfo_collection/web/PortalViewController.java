@@ -9,6 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,10 +17,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import cc.luole.tech.stuinfo_collection.core.dto.User;
 import cc.luole.tech.stuinfo_collection.core.model.AnswerQuestion;
+import cc.luole.tech.stuinfo_collection.core.model.DownloadStu;
 import cc.luole.tech.stuinfo_collection.core.model.Fusion;
 import cc.luole.tech.stuinfo_collection.core.model.Parent;
 import cc.luole.tech.stuinfo_collection.core.model.SchoolQuestion;
 import cc.luole.tech.stuinfo_collection.core.model.Student;
+import cc.luole.tech.stuinfo_collection.core.service.DownloadStuService;
 import cc.luole.tech.stuinfo_collection.util.Constants;
 import cc.luole.tech.stuinfo_collection.util.Util;
 
@@ -40,6 +43,9 @@ public class PortalViewController extends BaseController{
 
 	/** serialVersionUID*/
 	private static final long serialVersionUID = 1L;
+	
+	@Autowired
+	public DownloadStuService downloadStuService;
 	
 	@RequestMapping("/show")
 	public ModelAndView showQuestion(HttpServletRequest request,HttpServletResponse response){
@@ -70,6 +76,7 @@ public class PortalViewController extends BaseController{
 	@RequestMapping(value="/show",method=RequestMethod.POST)
 	public ModelAndView postQuestion(HttpServletRequest request ,HttpServletResponse response){
 		ModelAndView model = new ModelAndView();
+		DownloadStu ds = new DownloadStu();
 		//学生信息
 		String stuName=request.getParameter("stuname");
 		String stuSex=request.getParameter("stusex");
@@ -93,9 +100,18 @@ public class PortalViewController extends BaseController{
 		student.setAddress(stuHomeAddr);
 		student.setStuanswer(stuAnswer);
 		Serializable stuid=studentService.insert(student);
+		
+		ds.setdStuAddress(stuHomeAddr);
+		ds.setdStuApplyDept(Integer.parseInt(stuApply));
+		ds.setdStuBirthday(Util.toSqlDate4String(stuBirthday));
+		ds.setdStuHujiAddress(stuHuji);
+		ds.setdStuSex(stuSex);
+		ds.setdStuName(stuName);
+		
 		if(stuid==null ){
 			return this.jsonError("系统错误");
 		}
+		ds.setdStuId(Long.parseLong(stuid.toString()));
 		//--------------------------------------------------------------------------------
 		//1爸爸 2 妈妈
 		//父母信息
@@ -110,6 +126,16 @@ public class PortalViewController extends BaseController{
 				String mcompany=request.getParameter("mcompany");
 				String mjobTitle=request.getParameter("mjobTitle");
 				String mtelphone=request.getParameter("mtelphone");
+				
+				ds.setdStufcompany(fcompany);
+				ds.setdStufjobTitle(fjobTitle);
+				ds.setdStufname(fname);
+				ds.setdStuftelphone(ftelphone);
+				ds.setdStumcompany(mcompany);
+				ds.setdStumjobTitle(mjobTitle);
+				ds.setdStumname(mname);
+				ds.setdStumtelphone(mtelphone);
+				
 				/*List<Parent> listParent =new ArrayList<Parent>();*/				
 				//判断空
 				/*if(!Util.notEmpty(stuName)|| !Util.notEmpty(stuSex) || !Util.notEmpty(stuBirthday) || !Util.notEmpty(stuHuji) || 
@@ -158,7 +184,12 @@ public class PortalViewController extends BaseController{
 					answerQuestion.setAnswer(stuAnswer);
 					answerQuestion.setStuid(Long.parseLong(stuid.toString()));
 					Serializable ansqid=answerQuestionService.insert(answerQuestion);
+					ds.setdStuAnsId(Long.parseLong(ansqid.toString()));
 				}
+				ds.setdStuScqId(Long.parseLong(scQuestId));
+				ds.setdStuquestion(schoolqc);
+				ds.setdStuanswer(stuAnswer);
+				downloadStuService.insert(ds);
 				
 				//写入汇聚表
 				/*Fusion fusion = new Fusion();

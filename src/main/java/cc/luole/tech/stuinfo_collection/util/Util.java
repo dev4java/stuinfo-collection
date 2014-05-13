@@ -1,6 +1,7 @@
 package cc.luole.tech.stuinfo_collection.util;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -129,6 +130,16 @@ public class Util {
 			// TODO: handle exception
 		}
 		return date;
+	}
+	
+	public static String toStringDate4SqlDate(Date date){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String s="";
+		if(date !=null){			
+			s=sdf.format(date);
+		}
+		return s;
+		
 	}
 	
 	public static long tolong4Stringid(String sex){

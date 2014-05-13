@@ -436,6 +436,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 			
 			Session session = DaoHelper.getSessionFactory().getCurrentSession();
 			tx = session.beginTransaction();
+			System.out.println("--------------"+sql);
 			Query query = session.createSQLQuery(sql);
 			if(params != null && params.length > 0){
 				for(int i = 0; i < params.length; i++){

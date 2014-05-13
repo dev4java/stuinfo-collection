@@ -78,6 +78,18 @@
 							
 		</object>
 		
+		<object name="cc.luole.tech.stuinfo_collection.core.model.DownloadStu"
+			listenerClass="" strategyProperty="id">
+			<dbStrategy name="" clasz="cc.luole.sns.dal.route.strategy.DefaultStrategy">
+				<pattern value="[0-9]$" group="g1" />
+			</dbStrategy>
+			
+			<list name="download_list_usr_info"
+				sqlitem="select id from sc_general_download" sqlType="hsql"
+				keyProperty="id" valueProperty="id" />	
+								
+		</object>
+		
 		
 		
 	</route>
