@@ -36,6 +36,7 @@ import cc.luole.tech.stuinfo_collection.util.Util;
 * @version 1.0
 */
 @Controller
+@RequestMapping("/base")
 public class BaseController extends DispatcherServlet{
 	
 	private static final Logger log = LoggerFactory.getLogger(BaseController.class);
@@ -103,7 +104,7 @@ public class BaseController extends DispatcherServlet{
 			if(password.equals(dbPwd)){
 				session.setAttribute("isLogin", aUsr);
 				session.setMaxInactiveInterval(30*60);//半小时
-				return this.jsonSuccess("suc", aUsr);
+				return this.jsonSuccess("suc", "");
 			}else{
 				return this.jsonError("密码错误");
 			}			

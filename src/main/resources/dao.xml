@@ -87,6 +87,14 @@
 			<list name="download_list_usr_info"
 				sqlitem="select id from sc_general_download" sqlType="hsql"
 				keyProperty="id" valueProperty="id" />	
+				
+			<map name="find_download_stu_by_stuid"
+				sqlitem="select id from sc_general_download where stu_id=?"  sqlType="hsql"
+				keyProperty="id" valueProperty="id" />			
+			
+			<list name="get_download_stu_size"
+			sqlitem="select version();" sqlType="hsql"
+				keyProperty="stu_id" valueProperty="stu_id" />			
 								
 		</object>
 		

@@ -90,23 +90,24 @@ public class PortalViewController extends BaseController{
 		if(!Util.notEmpty(stuName)|| !Util.notEmpty(stuSex) || !Util.notEmpty(stuBirthday) || !Util.notEmpty(stuHuji) || !Util.notEmpty(stuHomeAddr) || !Util.notEmpty(scQuestId)|| !Util.notEmpty(stuAnswer)){
 			return this.jsonError("所填数据项不完整");
 		}
+		//TODO 换种实现方式
 		
 		Student student = new Student();
-		student.setName(stuName);
+		student.setName(Util.xssFiter(stuName));
 		student.setSex(Util.toInt4StringSex(stuSex));
 		student.setBirthday(Util.toSqlDate4String(stuBirthday));
-		student.setHujiAddress(stuHuji);
+		student.setHujiAddress(Util.xssFiter(stuHuji));
 		student.setApplyDept(Integer.parseInt(stuApply));
-		student.setAddress(stuHomeAddr);
-		student.setStuanswer(stuAnswer);
+		student.setAddress(Util.xssFiter(stuHomeAddr));
+		student.setStuanswer(Util.xssFiter(stuAnswer));
 		Serializable stuid=studentService.insert(student);
 		
-		ds.setdStuAddress(stuHomeAddr);
+		ds.setdStuAddress(Util.xssFiter(stuHomeAddr));
 		ds.setdStuApplyDept(Integer.parseInt(stuApply));
 		ds.setdStuBirthday(Util.toSqlDate4String(stuBirthday));
-		ds.setdStuHujiAddress(stuHuji);
-		ds.setdStuSex(stuSex);
-		ds.setdStuName(stuName);
+		ds.setdStuHujiAddress(Util.xssFiter(stuHuji));
+		ds.setdStuSex(Util.xssFiter(stuSex));
+		ds.setdStuName(Util.xssFiter(stuName));
 		
 		if(stuid==null ){
 			return this.jsonError("系统错误");
@@ -126,15 +127,14 @@ public class PortalViewController extends BaseController{
 				String mcompany=request.getParameter("mcompany");
 				String mjobTitle=request.getParameter("mjobTitle");
 				String mtelphone=request.getParameter("mtelphone");
-				
-				ds.setdStufcompany(fcompany);
-				ds.setdStufjobTitle(fjobTitle);
-				ds.setdStufname(fname);
-				ds.setdStuftelphone(ftelphone);
-				ds.setdStumcompany(mcompany);
-				ds.setdStumjobTitle(mjobTitle);
-				ds.setdStumname(mname);
-				ds.setdStumtelphone(mtelphone);
+				ds.setdStufcompany(Util.xssFiter(fcompany));
+				ds.setdStufjobTitle(Util.xssFiter(fjobTitle));
+				ds.setdStufname(Util.xssFiter(fname));
+				ds.setdStuftelphone(Util.xssFiter(ftelphone.trim()));
+				ds.setdStumcompany(Util.xssFiter(mcompany));
+				ds.setdStumjobTitle(Util.xssFiter(mjobTitle));
+				ds.setdStumname(Util.xssFiter(mname));
+				ds.setdStumtelphone(Util.xssFiter(mtelphone.trim()));
 				
 				/*List<Parent> listParent =new ArrayList<Parent>();*/				
 				//判断空
@@ -146,7 +146,7 @@ public class PortalViewController extends BaseController{
 				Parent fparent = new Parent();
 				fparent.setName(fname);
 				if(Util.notEmpty(frelation)){
-					fparent.setRelation(Util.toString4StringRelation(frelation));
+					fparent.setRelation(Util.toint4StringRelation(frelation));
 				}
 				if(Util.notEmpty(ftelphone)){
 					fparent.setTelphone(Long.parseLong(ftelphone));
@@ -159,7 +159,7 @@ public class PortalViewController extends BaseController{
 				Parent mparent = new Parent();
 				mparent.setName(mname);
 				if(Util.notEmpty(frelation)){
-					mparent.setRelation(Util.toString4StringRelation(mrelation));
+					mparent.setRelation(Util.toint4StringRelation(mrelation));
 				}
 				if(Util.notEmpty(mtelphone)){
 					mparent.setTelphone(Long.parseLong(mtelphone));

@@ -56,7 +56,7 @@ jQuery(document).ready(function() {
 			}
 			$.ajax({  
 	            type: "POST", 
-	            url: "/collection/show", 
+	            url: "/collection/collection/show", 
 	            cache: false, //将不会从浏览器缓存中加载请求信息。 
 	            data:{'stuname':stuname,'stusex':stusex,'stubirthday':stubirthday,'stuhuju':stuhuju,'stuhome':stuhome,
 	            	  'frelation':frelation,'fname':fname,'fcompany':fcompany,'fjobTitle':fjobTitle,'ftelphone':ftelphone,
@@ -97,7 +97,7 @@ jQuery(document).ready(function() {
 				<div class="app-wrap">
 					<ul class="tab-list clearfix">
 						<li class="current">小学</li>
-						<li>初中</li>
+						<li style="display:none;">初中 </li>
 					</ul>
 					<!--小学申请表 begin-->
 					<div class="app-con">
@@ -108,7 +108,7 @@ jQuery(document).ready(function() {
 								<ul>
 									<li class="clearfix">
 										<span class="tit">姓名</span>
-										<input type="text"  class="input-txt name" />
+										<input type="text"  class="input-txt name" onkeyup="value=value.replace(/[^\u4E00-\u9FA5|a-zA-Z]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5|a-zA-Z]/g,''))"/>
 										<span class="input-tip">(长度不超过10个中文字符，只允许输入汉字和字母)</span>
 									</li>
 									<li class="clearfix">
@@ -132,12 +132,12 @@ jQuery(document).ready(function() {
 									</li>
 									<li class="clearfix">
 										<span class="tit">户口所在地</span>
-										<input type="text" class="input-txt locus" />
+										<input type="text" class="input-txt locus" onkeyup="value=value.replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')"/>
 										<span class="input-tip">(最多可输入100个汉字，只允许输入汉字、字母、数字和-)</span>
 									</li>
 									<li class="clearfix">
 										<span class="tit">家庭住址</span>
-										<input type="text" class="input-txt locus addr" />
+										<input type="text" class="input-txt locus addr" onkeyup="value=value.replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')"/>
 										<span class="input-tip">(最多可输入100个汉字，只允许输入汉字、字母、数字和-)</span>
 									</li>
 									<!-- <li class="clearfix">
@@ -169,22 +169,22 @@ jQuery(document).ready(function() {
 								<ul class="info-list">
 									<li class="clearfix">
 										<span class="tit">姓名</span>
-										<input type="text" class="input-txt name mn" />
+										<input type="text" class="input-txt name mn" onkeyup="value=value.replace(/[^\u4E00-\u9FA5|a-zA-Z]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5|a-zA-Z]/g,''))"/>
 										<span class="input-tip">(长度不超过10个中文字符，只允许输入汉字和字母)</span>
 									</li>
 									<li class="clearfix">
 										<span class="tit">工作单位</span>
-										<input type="text" class="input-txt locus mc" />
+										<input type="text" class="input-txt locus mc" onkeyup="value=value.replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')"/>
 										<span class="input-tip">(最多可输入100个汉字，只允许输入汉字、字母、数字和-)</span>
 									</li>
 									<li class="clearfix">
 										<span class="tit">工作职务</span>
-										<input type="text" class="input-txt locus mj" />
+										<input type="text" class="input-txt locus mj" onkeyup="value=value.replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')"/>
 										<span class="input-tip">(最多可输入100个汉字，只允许输入汉字、字母、数字和-)</span>
 									</li>
 									<li class="clearfix">
 										<span class="tit">联系方式</span>
-										<input type="text" class="input-txt contact-way mp" />
+										<input type="text" class="input-txt contact-way mp" onkeyup="value=value.replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')"/>
 										<span class="input-tip">(必须填写真实手机号码)</span>
 									</li>
 								</ul>
@@ -192,22 +192,22 @@ jQuery(document).ready(function() {
 								<ul>
 									<li class="clearfix">
 										<span class="tit">姓名</span>
-										<input type="text" class="input-txt name fn" />
+										<input type="text" class="input-txt name fn" onkeyup="value=value.replace(/[^\u4E00-\u9FA5|a-zA-Z]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5|a-zA-Z]/g,''))"/>
 										<span class="input-tip">(长度不超过10个中文字符，只允许输入汉字和字母)</span>
 									</li>
 									<li class="clearfix">
 										<span class="tit">工作单位</span>
-										<input type="text" class="input-txt locus fc" />
+										<input type="text" class="input-txt locus fc" onkeyup="value=value.replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')"/>
 										<span class="input-tip">(最多可输入100个汉字，只允许输入汉字、字母、数字和-)</span>
 									</li>
 									<li class="clearfix">
 										<span class="tit">工作职务</span>
-										<input type="text" class="input-txt locus fj" />
+										<input type="text" class="input-txt locus fj" onkeyup="value=value.replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')"/>
 										<span class="input-tip">(最多可输入100个汉字，只允许输入汉字、字母、数字和-)</span>
 									</li>
 									<li class="clearfix">
 										<span class="tit">联系方式</span>
-										<input type="text" class="input-txt contact-way fp" />
+										<input type="text" class="input-txt contact-way fp" onkeyup="value=value.replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5|a-zA-Z|0-9|-]/g,'')"/>
 										<span class="input-tip">(必须填写真实手机号码)</span>
 									</li>
 								</ul>

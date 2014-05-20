@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.tagext.TryCatchFinally;
@@ -79,6 +81,16 @@ public class Util {
 		if(a.equals("爸爸")){
 			return 1;
 		}else if(a.equals(" 妈妈")){
+			return 2;
+		}else{
+			return 3;
+		}
+	}
+	
+	public static int toint4StringRelation(String a){
+		if(a.equals("1")){
+			return 1;
+		}else if(a.equals("2")){
 			return 2;
 		}else{
 			return 3;
@@ -166,5 +178,17 @@ public class Util {
 		return par;
 	}
 	
+	public static String xssFiter(String str){
+		String regEx="[《》`~!@#$%^&amp;*()+=|{}':;',\\[\\].&lt;&gt;/?~！@#￥%……&amp;*（）——+|{}【】'；：”“’。，、？]"; 
+		Pattern p = Pattern.compile(regEx);;  
+		Matcher m = p.matcher(str);;  
+		//System.out.println(str);;  
+		//System.out.println(m.replaceAll("").trim());
+		return m.replaceAll("").trim(); 
+	}
+	
+	public static void main(String[] adr){
+		//xssFiter("》f《sdf*adCVs*34_a _09_b5*[/435^*&amp;城池()^$$&amp;*).{}+.|.)%%*(*.中国}34{45[]12.fd'*&amp;999下面是中文的字符￥……{}【】。，；’“'”？");
+	}
 
 }

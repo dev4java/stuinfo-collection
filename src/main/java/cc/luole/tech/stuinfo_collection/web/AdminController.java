@@ -18,6 +18,7 @@ import cc.luole.sns.tools.commons.Page;
 import cc.luole.tech.stuinfo_collection.core.download.DownLoadService;
 import cc.luole.tech.stuinfo_collection.core.dto.User;
 import cc.luole.tech.stuinfo_collection.core.model.AnswerQuestion;
+import cc.luole.tech.stuinfo_collection.core.model.DownloadStu;
 import cc.luole.tech.stuinfo_collection.core.model.Parent;
 import cc.luole.tech.stuinfo_collection.core.model.SchoolQuestion;
 import cc.luole.tech.stuinfo_collection.core.model.Student;
@@ -40,6 +41,9 @@ public class AdminController extends BaseController{
 	
 	@Autowired
 	public DownLoadService  downLoadService ;
+	
+	@Autowired
+	public DownloadStuService downloadStuService;
 	
 	/** serialVersionUID*/
 	private static final long serialVersionUID = 1L;
@@ -202,6 +206,12 @@ public class AdminController extends BaseController{
 						sf=answerQuestionService.delete(answerQuestion.getId());
 					}
 				}
+				//删除下载
+				DownloadStu ds =downloadStuService.findDownloadStuByStuId(lid);
+				if(ds!=null){
+					downloadStuService.delete(ds.getId());
+				}
+				
 				return this.jsonSuccess("suc", null);
 			}else{
 				return this.jsonError("删除失败");

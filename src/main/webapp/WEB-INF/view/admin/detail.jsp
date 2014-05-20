@@ -16,7 +16,7 @@
 		<div id="content" class="png-bg">
 			<div class="content-wrap1">
 				<h2 class="app-tit">申请信息查询</h2>
-				<p class="return-info clearfix"><a href="/admin/list">返回信息列表</a></p>
+				<p class="return-info clearfix"><a href="/collection/admin/list">返回信息列表</a></p>
 				<div class="app-wrap">
 					<div class="app-con">
 						<h3>申请信息详情</h3>

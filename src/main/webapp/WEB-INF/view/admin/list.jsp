@@ -14,7 +14,7 @@
 				if(obj=="" || obj==null){
 					return false;
 				}
-				window.location.href="/admin/show?uid="+obj;
+				window.location.href="/collection/admin/show?uid="+obj;
 			}
 		
 		/*删除信息*/
@@ -38,14 +38,14 @@
 				}
 				$.ajax({  
 		            type: "POST", 
-		            url: "/admin/delete", 
+		            url: "/collection/admin/delete", 
 		            cache: false, //将不会从浏览器缓存中加载请求信息。 
 		            data:{'uid':obj},    
 		            dataType: 'json', 
 		            success: function(data,statusText){
 		              if(data.status==0){		    
 		            	  if(didv==1){
-		            		  var url="/admin/list?pageNo=1&pageSize=10&flag=next";
+		            		  var url="/collection/admin/list?pageNo=1&pageSize=10&flag=next";
 			            	  window.location.href=url; 
 		            	  }else{
 		            		  window.location.reload();
@@ -196,11 +196,11 @@
 				<div class="app-wrap">
 					<ul class="tab-list clearfix">
 						<li class="current">小学</li>
-						<li>初中</li>
+						<li style="display:none;">初中</li>
 					</ul>
 					<!--小学申请信息 begin-->
 					<div class="app-con">
-						<p class="return-info clearfix"><a href="/admin/download">下载全部数据</a></p>
+						<p class="return-info clearfix"><a href="/collection/admin/download">下载全部数据</a></p>
 						<div class="table_wrap">
 							<table id="xtid">
 								<tr class="table-head">

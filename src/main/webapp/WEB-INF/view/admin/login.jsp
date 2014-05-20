@@ -23,13 +23,13 @@
 					}
 					$.ajax({  
 			            type: "POST", 
-			            url: "/admin/login", 
+			            url: "/collection/base/login", 
 			            cache: false, //将不会从浏览器缓存中加载请求信息。 
 			            data:{'name':username,'password':pwd},    
 			            dataType: 'json', 
 			            success: function(data,statusText){
 			              if(data.status==0){
-			            	  window.location.href="/admin/list";
+			            	  window.location.href="/collection/admin/list";
 			              }else{
 			            	 $("#errid").css("display","block");
 			              }

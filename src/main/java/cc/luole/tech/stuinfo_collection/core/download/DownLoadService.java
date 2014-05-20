@@ -25,7 +25,7 @@ import cc.luole.tech.stuinfo_collection.util.Writer;
 public class DownLoadService {
 
 	@Autowired
-	private DownloadStuService dao;  
+	private DownloadStuService downloadStuService;  
    
   
     public void exportXLS(HttpServletResponse response) {  
@@ -130,7 +130,7 @@ public class DownLoadService {
      * 从数据库获得所有的Computer信息. 
      */  
     private List<DownloadStu> getDatasource() {  
-        return dao.getListDownloadStu();  
+        return downloadStuService.getListDownloadStu();  
     }  
   
     /** 

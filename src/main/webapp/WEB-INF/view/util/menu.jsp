@@ -6,16 +6,18 @@
 					<h1><a href="###" class="png-bg">北京教育科学研究院丰台学校</a></h1>
 				</div>
 				<div class="header-sea">
-					<form action="" method="post" class="clearfix">
-						<input type="text" class="search-txt png-bg" name="keyWord" />
-						<label>教育科研院...</label>
-						<input type="submit" class="search-btn png-bg" value="搜索">
+					<form action="http://www.jkyftxx.com/search.jspx" method="" class="clearfix" target="_blank">
+						<input type="text" class="search-txt png-bg" name="q" value="" 
+							type="text" id="txtKey" onfocus="if(this.value=='请输入关键词')this.value=''" 
+							onblur="if(this.value=='')this.value='请输入关键词'" 
+							maxlength="24" autocomplete="off" />
+						<input type="submit" id="btnSearch" value="" class="search-btn png-bg" >
 					</form>
 				</div>
 			</div>
 		</div>
 		<!--header end-->
-		<!--nav begin-->
+<!--nav begin-->
 		<div id="nav">
 			<div class="nav-inner">
 				<ul class="nav-list clearfix">
@@ -32,6 +34,9 @@
 								</dt>
 								<dt class="item">
 									<a href="${home}/xxzc/index.htm">学校章程</a>
+								</dt>
+								<dt class="item">
+									<a href="${home}/xyly/index.htm">校园掠影</a>
 								</dt>
 								<dt class="item">
 									<a href="${home}/lxwm/index.htm">联系我们</a>
@@ -56,7 +61,7 @@
 						</div>
 					</li>
 					<li class="item">
-						<a href="###">教师天地<i class="png-bg"></i></a>
+						<a href="###">敬教纵览<i class="png-bg"></i></a>
 						<div class="nav-list" style="display: none;">
 							<dl class="clearfix">
 								<dt class="item">
@@ -72,26 +77,26 @@
 									<a href="${home}/kcjs/index.htm">课程建设</a>
 								</dt>
 								<dt class="item">
-									<a href="${home}/jyky/index.htm">教育科研</a>
+									<a href="${home}/jyky/index.htm">课题研究</a>
 								</dt>
 							</dl>
 						</div>
 					</li>
 					<li class="item">
-						<a href="###">学生乐园<i class="png-bg"></i></a>
+						<a href="###">乐学天地<i class="png-bg"></i></a>
 						<div class="nav-list" style="display: none;">
 							<dl class="clearfix">
 								<dt class="item">
 									<a href="${home}/czda/index.htm">成长档案</a>
 								</dt>
 								<dt class="item">
-									<a href="${home}/sthd/index.htm">社团活动</a>
+									<a href="${home}/sthd/index.htm">主题活动</a>
 								</dt>
 								<dt class="item">
-									<a href="${home}/xxhj/index.htm">星星火炬</a>
+									<a href="${home}/xxhj/index.htm">团队之窗</a>
 								</dt>
 								<dt class="item">
-									<a href="${home}/tqpp/index.htm">团旗飘飘</a>
+									<a href="${home}/tqpp/index.htm">个性发展</a>
 								</dt>
 								<dt class="item">
 									<a href="${home}/xyxy/index.htm">校园心语</a>
@@ -110,10 +115,13 @@
 									<a href="${home}/dyfc/index.htm">党员风采</a>
 								</dt>
 								<dt class="item">
-									<a href="${home}/zbsh/index.htm">支部生活</a>
+									<a href="${home}/zbsh/index.htm">党团动态</a>
 								</dt>
 								<dt class="item">
-									<a href="${home}/qtdt/index.htm">群团动态</a>
+									<a href="${home}/qtdt/index.htm">教工之家</a>
+								</dt>
+								<dt class="item">
+									<a href="${home}/mzgl/index.htm">民主管理</a>
 								</dt>
 							</dl>
 						</div>
@@ -124,6 +132,7 @@
 							<dl class="clearfix">
 								<dt class="item"><a href="${home}/zstg/index.htm">招生通告</a></dt>
 								<dt class="item"><a href="${home}/zpqs/index.htm">招聘启事</a></dt>
+								<dt class="item"><a href="${home}/collection">在线报名</a></dt>
 							</dl>
 						</div>
 					</li>
